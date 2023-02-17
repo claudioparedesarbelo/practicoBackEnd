@@ -1,47 +1,72 @@
-function mostrarLista(lista) {
-  if (mostrarLista.length === 0) {
-    console.log("La lista esta vacia")
-  } else {
-    for (const elemento of lista){
-    console.log(elemento)
-  }
-  console.log(`longitud de la lista: ${lista.length}`)
-}
-}
+class ProductManager {
+    constructor (){
+        this.products = [];
+    } 
+    addProduct(item) {
+        const products = this.getProducts();
+        const addSuccessfully = 'Product has been add successfully'
+        if(products.length){
+            
+            const result = products.find( element => element.code === item.code )
+            
+            if(result){
+                return console.log('This products has already been added!!')
+            } else {
+                let lastIndex = products.length - 1;
+                let lastId = products[lastIndex].id;
+                item.id = lastId + 1;
+                let id = item.id;
+                this.products.push(item);
+                console.log(addSuccessfully)
+                return id;
+            }
 
-mostrarLista([])
-mostrarLista([1, 2, 3])
-
-class Contador {
-    static cant = 0
-    
-    constructor(responsable) {
-        this.responsable = responsable
-        this.contador = 0
+        } else {
+            item.id = 1;
+            this.products.push(item);
+            console.log(addSuccessfully)
+        }
+        }
+    getProducts() {
+        const products = this.products;
+        return products;
+        
     }
-
-    contar(){
-        this.contador++
-        Contador.cant++
-    }
-    static getCantidadTotal() {
-        return Contador.cant
+    getProductById(id){
+        const products = this.getProducts();
+        let productsById;
+        const notFound = 'Not Found'
+        products.map(el => {
+            el.id === id && (productsById = el);
+        });
+        return productsById ? console.log(productsById) : console.log(notFound);
     }
 }
 
-const c1 = new Contador('marian')
-const c2 = new Contador('anderson')
+const productsManager = new ProductManager();
 
-c1.contar()
-c1.contar()
-c1.contar()
-c1.contar()
-c1.contar()
+console.log(productsManager.getProducts())
 
-c2.contar()
-c2.contar()
-c2.contar()
+productsManager.addProduct({
+    title:'producto prueba',
+    description:'Este es un producto prueba',
+    price:200,
+    thumbnail:'Sin imagen',
+    code:'abc123',
+    stock:25
+});
 
-console.log(c1)
-console.log(c2)
-console.log(Contador.getCantidadTotal())
+console.log(productsManager.getProducts());
+
+productsManager.addProduct({
+    title:'producto prueba',
+    description:'Este es un producto prueba',
+    price:200,
+    thumbnail:'Sin imagen',
+    code:'abc123',
+    stock:25
+});
+
+
+productsManager.getProductById(2);
+
